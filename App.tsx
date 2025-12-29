@@ -46,7 +46,7 @@ function App() {
   );
 
   return (
-    <div className="flex h-screen bg-[#0f172a] text-slate-100 overflow-hidden">
+    <div className="flex h-[100dvh] bg-[#0f172a] text-slate-100 overflow-hidden">
       {/* Sidebar (Desktop) */}
       <aside className="hidden md:flex w-64 flex-col border-r border-slate-800 bg-slate-900/50 p-4 backdrop-blur-xl h-full flex-shrink-0 z-20">
         <div className="mb-8 px-2 flex items-center gap-2">
