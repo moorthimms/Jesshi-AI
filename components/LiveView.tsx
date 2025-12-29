@@ -21,7 +21,6 @@ const LiveView: React.FC = () => {
   const sourcesRef = useRef<Set<AudioBufferSourceNode>>(new Set());
 
   // Session Ref
-  // We use a promise wrapper to ensure we only send data when connected
   const sessionPromiseRef = useRef<Promise<any> | null>(null);
   const sessionCloserRef = useRef<(() => void) | null>(null);
 
@@ -57,16 +56,6 @@ const LiveView: React.FC = () => {
   }, []);
 
   const disconnect = useCallback(() => {
-    if (sessionCloserRef.current) {
-        // We can't strictly "close" the session object easily in the current SDK version 
-        // without keeping the session object itself. 
-        // The SDK documentation suggests assuming it closes on page unload or explicitly if we have the session.
-        // For this implementation, we will reload the page or just stop sending data.
-        // Ideally, we would call session.close() if we stored the resolved session.
-        // But since we use sessionPromise, let's just clean up audio and reset state.
-        // The session relies on the websocket, which we can't easily reach into via the promise without storing it.
-        // A simple way to "disconnect" in this pattern is to just stop the audio processing loop.
-    }
     cleanupAudio();
     setStatus('disconnected');
   }, [cleanupAudio]);
@@ -86,7 +75,7 @@ const LiveView: React.FC = () => {
       streamRef.current = stream;
 
       const config = {
-        model: 'gemini-2.5-flash-native-audio-preview-09-2025',
+        model: 'gemini-2.5-flash-native-audio-preview-09-2025', // Use latest native audio model
         config: {
           responseModalities: [Modality.AUDIO],
           speechConfig: {
@@ -110,7 +99,7 @@ const LiveView: React.FC = () => {
             const source = inputAudioContextRef.current.createMediaStreamSource(stream);
             inputSourceRef.current = source;
             
-            // Use ScriptProcessor for raw PCM access (standard for this API usage)
+            // Use ScriptProcessor for raw PCM access
             const scriptProcessor = inputAudioContextRef.current.createScriptProcessor(4096, 1, 1);
             processorRef.current = scriptProcessor;
 
@@ -200,7 +189,7 @@ const LiveView: React.FC = () => {
           Jesshi Live
         </h2>
         <p className="text-slate-400 max-w-md">
-          Experience real-time, low-latency voice conversation. 
+          Experience real-time, low-latency voice conversation with Gemini 2.5. 
           Speak naturally and interrupt at any time.
         </p>
       </div>
