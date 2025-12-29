@@ -1,0 +1,7 @@
+{
+  "name": "Jesshi AI",
+  "description": "A comprehensive multimodal AI studio showcasing Jesshi's capabilities: Chat with Search Grounding, Real-time Voice (Live API), Image Generation, and Veo Video Creation.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
